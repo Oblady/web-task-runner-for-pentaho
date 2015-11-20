@@ -1,18 +1,20 @@
 <?php
 namespace App\Model\Table;
 
-use App\Model\Entity\Migration;
+use App\Model\Entity\MigrationsParameter;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
 /**
- * Migrations Model
+ * MigrationsParameters Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Scenarios
+ * @property \Cake\ORM\Association\BelongsTo $Migrations
+ * @property \Cake\ORM\Association\BelongsTo $Tasks
+ * @property \Cake\ORM\Association\BelongsTo $Parameters
  */
-class MigrationsTable extends Table
+class MigrationsParametersTable extends Table
 {
 
     /**
@@ -25,15 +27,19 @@ class MigrationsTable extends Table
     {
         parent::initialize($config);
 
-        $this->table('migrations');
-        $this->displayField('name');
+        $this->table('migrations_parameters');
+        $this->displayField('id');
         $this->primaryKey('id');
 
-        $this->belongsTo('Scenarios', [
-            'foreignKey' => 'scenario_id'
+        $this->belongsTo('Migrations', [
+            'foreignKey' => 'migration_id'
         ]);
-
-        $this->hasMany('MigrationsParameters');
+        $this->belongsTo('Tasks', [
+            'foreignKey' => 'task_id'
+        ]);
+        $this->belongsTo('Parameters', [
+            'foreignKey' => 'parameter_id'
+        ]);
     }
 
     /**
@@ -49,7 +55,7 @@ class MigrationsTable extends Table
             ->allowEmpty('id', 'create');
 
         $validator
-            ->allowEmpty('name');
+            ->allowEmpty('value');
 
         return $validator;
     }
@@ -63,7 +69,9 @@ class MigrationsTable extends Table
      */
     public function buildRules(RulesChecker $rules)
     {
-        $rules->add($rules->existsIn(['scenario_id'], 'Scenarios'));
+        $rules->add($rules->existsIn(['migration_id'], 'Migrations'));
+        $rules->add($rules->existsIn(['task_id'], 'Tasks'));
+        $rules->add($rules->existsIn(['parameter_id'], 'Parameters'));
         return $rules;
     }
 }

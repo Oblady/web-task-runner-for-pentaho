@@ -40,6 +40,8 @@ class TasksTable extends Table
             'targetForeignKey' => 'scenario_id',
             'joinTable' => 'scenarios_tasks'
         ]);
+
+        $this->hasMany('MigrationsParameters');
     }
 
     /**

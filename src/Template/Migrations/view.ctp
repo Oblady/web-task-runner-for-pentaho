@@ -20,9 +20,49 @@
             <th><?= __('Scenario') ?></th>
             <td><?= $migration->has('scenario') ? $this->Html->link($migration->scenario->name, ['controller' => 'Scenarios', 'action' => 'view', $migration->scenario->id]) : '' ?></td>
         </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($migration->id) ?></td>
-        </tr>
     </table>
+    <div class="related">
+        <div class="small-6 columns">
+            <h4><?= __('Paramètres liés au scénario') ?></h4>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Paramètre</th>
+                        <th>Valeur</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php foreach($migration->scenario->parameters as $parameter): ?>
+                <tr>
+                    <td><?= $parameter->name ?></td>
+                    <td><?= $parameter->_joinData->value ?></td>
+                </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+        </div>
+        <div class="small-6 columns">
+            <h4><?= __('Paramètres liés aux tâches du scénario') ?></h4>
+            <?php foreach($migration->scenario->tasks as $task): ?>
+                <h5><?= $task->name ?></h5>
+                <table>
+                    <thead>
+                    <tr>
+                        <th>Paramètre</th>
+                        <th>Valeur</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach($task->parameters as $parameter): ?>
+                        <tr>
+                            <td><?= $parameter->name ?></td>
+                            <td><?= $parameter->_joinData->value ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+            <?php endforeach; ?>
+            <?= debug($migration->scenario->tasks) ?>
+        </div>
+    </div>
 </div>
