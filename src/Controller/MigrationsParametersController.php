@@ -11,49 +11,16 @@ use App\Controller\AppController;
 class MigrationsParametersController extends AppController
 {
 
-    /**
-     * Index method
-     *
-     * @return void
-     */
-    public function index()
-    {
-        $this->paginate = [
-            'contain' => ['Migrations', 'Parameters']
-        ];
-        $this->set('migrationsParameters', $this->paginate($this->MigrationsParameters));
-        $this->set('_serialize', ['migrationsParameters']);
-    }
-
-    /**
-     * View method
-     *
-     * @param string|null $id Migrations Parameter id.
-     * @return void
-     * @throws \Cake\Network\Exception\NotFoundException When record not found.
-     */
-    public function view($id = null)
-    {
-        $migrationsParameter = $this->MigrationsParameters->get($id, [
-            'contain' => ['Migrations', 'Parameters']
-        ]);
-        $this->set('migrationsParameter', $migrationsParameter);
-        $this->set('_serialize', ['migrationsParameter']);
-    }
-
-    /**
-     * Add method
-     *
-     * @return void Redirects on successful add, renders view otherwise.
-     */
-    public function add()
-    {
+    public function add(){
         $migrationsParameter = $this->MigrationsParameters->newEntity();
         if ($this->request->is('post')) {
             $migrationsParameter = $this->MigrationsParameters->patchEntity($migrationsParameter, $this->request->data);
+            $migrationsParameter->set('migration_id',intval($this->request->query['migration_id']));
+            $migrationsParameter->set('task_id',intval($this->request->query['task_id']));
+            $migrationsParameter->set('parameter_id',intval($this->request->query['parameter_id']));
             if ($this->MigrationsParameters->save($migrationsParameter)) {
                 $this->Flash->success(__('The migrations parameter has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller'=>'migrations', 'action' => 'view', $this->request->query['migration_id']]);
             } else {
                 $this->Flash->error(__('The migrations parameter could not be saved. Please, try again.'));
             }
@@ -73,22 +40,19 @@ class MigrationsParametersController extends AppController
      */
     public function edit($id = null)
     {
-        $migrationsParameter = $this->MigrationsParameters->get($id, [
-            'contain' => []
-        ]);
+        $migrationsParameter = $this->MigrationsParameters->get($id);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $migrationsParameter = $this->MigrationsParameters->patchEntity($migrationsParameter, $this->request->data);
             if ($this->MigrationsParameters->save($migrationsParameter)) {
                 $this->Flash->success(__('The migrations parameter has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                return $this->redirect(['controller'=>'migrations', 'action' => 'view', $migrationsParameter->migration_id]);
             } else {
                 $this->Flash->error(__('The migrations parameter could not be saved. Please, try again.'));
             }
         }
-        $migrations = $this->MigrationsParameters->Migrations->find('list', ['limit' => 200]);
-        $parameters = $this->MigrationsParameters->Parameters->find('list', ['limit' => 200]);
-        $this->set(compact('migrationsParameter', 'migrations', 'parameters'));
+        $this->set(compact('migrationsParameter'));
         $this->set('_serialize', ['migrationsParameter']);
+
     }
 
     /**

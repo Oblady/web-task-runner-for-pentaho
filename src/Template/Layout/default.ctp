@@ -31,6 +31,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <?= $this->fetch('script') ?>
 </head>
 <body>
@@ -41,6 +42,28 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
             </li>
         </ul>
         <section class="top-bar-section">
+            <ul class="left">
+                <li><?= $this->Html->link(
+                    '<i class="fa fa-usd"></i> Paramètres',
+                    '/parameters',
+                    ['escape' => false]
+                ); ?></li>
+                <li><?= $this->Html->link(
+                        '<i class="fa fa-list"></i> Tâches',
+                        '/tasks',
+                        ['escape' => false]
+                    ); ?></li>
+                <li><?= $this->Html->link(
+                        '<i class="fa fa-list-alt"></i> Scénarios',
+                        '/scenarios',
+                        ['escape' => false]
+                    ); ?></li>
+                <li><?= $this->Html->link(
+                        '<i class="fa fa-cogs"></i> Migrations',
+                        '/migrations',
+                        ['escape' => false]
+                    ); ?></li>
+            </ul>
             <ul class="right">
                 <li><a target="_blank" href="http://book.cakephp.org/3.0/">Documentation</a></li>
                 <li><a target="_blank" href="http://api.cakephp.org/3.0/">API</a></li>

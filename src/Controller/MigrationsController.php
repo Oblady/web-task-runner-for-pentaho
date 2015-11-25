@@ -34,11 +34,24 @@ class MigrationsController extends AppController
      */
     public function view($id = null)
     {
-        $migration = $this->Migrations->find('all', [
-            'contain' => ['Scenarios','Scenarios.Parameters', 'Scenarios.Tasks.Parameters', 'MigrationsParameters']
-        ])->first();
-        debug($migration);
-        $this->set('migration', $migration);
+        $migration = $this->Migrations->get($id, [
+            'contain' => ['Scenarios','Scenarios.Parameters', 'Scenarios.Tasks.Parameters']
+        ]);
+        $migrationsParameters = $this->Migrations->MigrationsParameters->find('list', [
+            'keyField' => 'parameter_id',
+            'valueField' => 'value',
+            'groupField' => 'task_id'
+        ])->where([
+            'MigrationsParameters.migration_id' => $id
+        ])->toArray();
+        $migrationsParametersId = $this->Migrations->MigrationsParameters->find('list', [
+            'keyField' => 'parameter_id',
+            'valueField' => 'id',
+            'groupField' => 'task_id'
+        ])->where([
+            'MigrationsParameters.migration_id' => $id
+        ])->toArray();
+        $this->set(compact('migration','migrationsParameters','migrationsParametersId'));
         $this->set('_serialize', ['migration']);
     }
 

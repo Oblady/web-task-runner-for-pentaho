@@ -13,9 +13,6 @@
     <fieldset>
         <legend><?= __('Add Migrations Parameter') ?></legend>
         <?php
-            echo $this->Form->input('migration_id', ['options' => $migrations, 'empty' => true]);
-            echo $this->Form->input('task_id');
-            echo $this->Form->input('parameter_id', ['options' => $parameters, 'empty' => true]);
             echo $this->Form->input('value');
         ?>
     </fieldset>

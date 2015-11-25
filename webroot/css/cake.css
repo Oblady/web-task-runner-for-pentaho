@@ -560,3 +560,7 @@ div.message.hidden {
     margin-bottom: 10px;
     border-bottom: 0px;
 }
+
+.button{
+    margin-bottom: 0;
+}
