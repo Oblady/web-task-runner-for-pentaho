@@ -17,9 +17,9 @@
 <div class="migrationsParameters form large-9 medium-8 columns content">
     <?= $this->Form->create($migrationsParameter) ?>
     <fieldset>
-        <legend><?= __('Edit Migrations Parameter') ?></legend>
+        <legend>Éditer la valeur du paramètre <code>${<?= $migrationsParameter->parameter->name ?>}</code> pour la migration <em><?= $migrationsParameter->migration->name ?></em></legend>
         <?php
-            echo $this->Form->input('value');
+            echo $this->Form->input('value', ['label' => 'Valeur du paramètre']);
         ?>
     </fieldset>
     <?= $this->Form->button(__('Submit')) ?>

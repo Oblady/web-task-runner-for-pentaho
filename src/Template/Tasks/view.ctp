@@ -26,24 +26,18 @@
             <th><?= __('Job Path') ?></th>
             <td><?= h($task->job_path) ?></td>
         </tr>
-        <tr>
-            <th><?= __('Id') ?></th>
-            <td><?= $this->Number->format($task->id) ?></td>
-        </tr>
     </table>
     <div class="related">
         <h4><?= __('Related Parameters') ?></h4>
         <?php if (!empty($task->parameters)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('Description') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($task->parameters as $parameters): ?>
             <tr>
-                <td><?= h($parameters->id) ?></td>
                 <td><?= h($parameters->name) ?></td>
                 <td><?= h($parameters->description) ?></td>
                 <td class="actions">
@@ -64,14 +58,12 @@
         <?php if (!empty($task->scenarios)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('Description') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($task->scenarios as $scenarios): ?>
             <tr>
-                <td><?= h($scenarios->id) ?></td>
                 <td><?= h($scenarios->name) ?></td>
                 <td><?= h($scenarios->description) ?></td>
                 <td class="actions">

@@ -32,14 +32,12 @@
         <?php if (!empty($scenario->parameters)): ?>
         <table cellpadding="0" cellspacing="0">
             <tr>
-                <th><?= __('Id') ?></th>
                 <th><?= __('Name') ?></th>
                 <th><?= __('Description') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
             <?php foreach ($scenario->parameters as $parameters): ?>
             <tr>
-                <td><?= h($parameters->id) ?></td>
                 <td><?= h($parameters->name) ?></td>
                 <td><?= h($parameters->description) ?></td>
                 <td class="actions">

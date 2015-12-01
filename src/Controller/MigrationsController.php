@@ -34,6 +34,7 @@ class MigrationsController extends AppController
      */
     public function view($id = null)
     {
+        $execLines = $this->Migrations->getExecLine($id);
         $migration = $this->Migrations->get($id, [
             'contain' => ['Scenarios','Scenarios.Parameters', 'Scenarios.Tasks.Parameters']
         ]);
@@ -51,7 +52,7 @@ class MigrationsController extends AppController
         ])->where([
             'MigrationsParameters.migration_id' => $id
         ])->toArray();
-        $this->set(compact('migration','migrationsParameters','migrationsParametersId'));
+        $this->set(compact('migration','migrationsParameters','migrationsParametersId','execLines'));
         $this->set('_serialize', ['migration']);
     }
 

@@ -4,23 +4,23 @@ a.disabled {
 }
 
 a:hover {
-    color: #15848F;
+    color: rgba(0, 86, 184, 0.5);
 }
 
 a {
-    color: #1798A5;
+    color: rgba(0, 86, 184, 1);
 }
 
 .side-nav li a:not(.button) {
-    color: #15848F;
+    color: rgba(0, 86, 184, 0.5);
 }
 
 .side-nav li a:not(.button):hover {
-    color: #15848F;
+    color: rgba(0, 86, 184, 0.5);
 }
 
 header {
-    background-color: #15848F;
+    background-color: rgba(0, 86, 184, 0.5);;
     color: #ffffff;
     font-size: 30px;
     height: 84px;
@@ -364,20 +364,20 @@ pre {
 }
 
 .top-bar.expanded .title-area {
-    background: #01545b;
+    background: #0056b8;
 }
 
 .top-bar.expanded, .top-bar,.top-bar-section ul li,.top-bar-section li:not(.has-form) a:not(.button) {
-    background: #116d76;
+    background: #3561b1;
 }
 
 .top-bar-section li:not(.has-form) a:not(.button):hover {
-    background-color: #308e97;
-    background: #308e97;
+    background: rgba(0, 86, 184, 0.9);
+    background-color: rgba(0, 86, 184, 0.9);
 }
 
 .side-nav li.heading {
-    color: #1798A5;
+    color: rgba(0, 86, 184, 1);
     font-size: 0.875rem;
     font-weight: bold;
     text-transform: uppercase;
@@ -410,15 +410,15 @@ table tr {
 }
 
 table thead tr {
-    border-bottom: 1px solid #1798A5;
+    border-bottom: 1px solid #0056b8;
 }
 
 table tr th {
     padding: 0.5625rem 0.625rem;
     font-size: 0.875rem;
-    color: #1798A5;
+    color: rgba(0, 86, 184, 1);
     text-align: left;
-    border-bottom: 2px solid #1798A5;
+    border-bottom: #0056b8;
 }
 
 table tr:nth-of-type(even) {
@@ -504,7 +504,7 @@ div.message.hidden {
 .vertical-table th {
     padding: 0.5625rem 0.625rem;
     font-size: 0.875rem;
-    color: #1798A5;
+    color: rgba(0, 86, 184, 1);
     border: none;
     text-align: left;
 }
@@ -541,20 +541,20 @@ div.message.hidden {
 }
 
 .content h3 {
-    color: #be140b;
+    color: #0056b8;
     padding-bottom: 0.5rem;
     margin-bottom: 20px;
 }
 
 .content h4 {
-    color: #be140b;
+    color: #0056b8;
     padding-bottom: 0.5rem;
     margin-bottom: 20px;
     border-bottom: 2px solid #be140b;
 }
 
 .content .related h4 {
-    color: #ebaa20;
+    color: #3561b1;
     padding-bottom: 0.5rem;
     margin-top: 20px;
     margin-bottom: 10px;

@@ -13,7 +13,6 @@
  * @license       http://www.opensource.org/licenses/mit-license.php MIT License
  */
 
-$cakeDescription = 'CakePHP: the rapid development php framework';
 ?>
 <!DOCTYPE html>
 <html>
@@ -21,7 +20,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        <?= $cakeDescription ?>:
+        Pentaho Web Runner |
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
@@ -38,7 +37,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
-                <h1><a href=""><?= $this->fetch('title') ?></a></h1>
+                <h1><a href="">Pentaho Web Runner .::. <?= $this->fetch('title') ?></a></h1>
             </li>
         </ul>
         <section class="top-bar-section">
@@ -65,8 +64,7 @@ $cakeDescription = 'CakePHP: the rapid development php framework';
                     ); ?></li>
             </ul>
             <ul class="right">
-                <li><a target="_blank" href="http://book.cakephp.org/3.0/">Documentation</a></li>
-                <li><a target="_blank" href="http://api.cakephp.org/3.0/">API</a></li>
+                <li><a target="_blank" href="https://twitter.com/obladycms">Conçu avec <i class="fa fa-heart"></i> par @ObladyCMS</a></li>
             </ul>
         </section>
     </nav>

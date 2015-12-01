@@ -40,7 +40,7 @@ class MigrationsParametersController extends AppController
      */
     public function edit($id = null)
     {
-        $migrationsParameter = $this->MigrationsParameters->get($id);
+        $migrationsParameter = $this->MigrationsParameters->get($id,['contain' => ['Parameters', 'Migrations']]);
         if ($this->request->is(['patch', 'post', 'put'])) {
             $migrationsParameter = $this->MigrationsParameters->patchEntity($migrationsParameter, $this->request->data);
             if ($this->MigrationsParameters->save($migrationsParameter)) {

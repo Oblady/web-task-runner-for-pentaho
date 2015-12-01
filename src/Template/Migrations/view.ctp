@@ -1,18 +1,16 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('Edit Migration'), ['action' => 'edit', $migration->id]) ?> </li>
-        <li><?= $this->Form->postLink(__('Delete Migration'), ['action' => 'delete', $migration->id], ['confirm' => __('Are you sure you want to delete # {0}?', $migration->id)]) ?> </li>
-        <li><?= $this->Html->link(__('List Migrations'), ['action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Migration'), ['action' => 'add']) ?> </li>
-        <li><?= $this->Html->link(__('List Scenarios'), ['controller' => 'Scenarios', 'action' => 'index']) ?> </li>
-        <li><?= $this->Html->link(__('New Scenario'), ['controller' => 'Scenarios', 'action' => 'add']) ?> </li>
+        <li><?= $this->Html->link(__('<i class="fa fa-pencil"></i> Modifier cette migration'), ['action' => 'edit', $migration->id], ['escape' => false]) ?> </li>
+        <li><?= $this->Form->postLink(__('<i class="fa fa-trash"></i> Supprimer cette migration'), ['action' => 'delete', $migration->id], ['confirm' => __('Are you sure you want to delete # {0}?', $migration->id), 'escape' => false]) ?> </li>
+        <li><?= $this->Html->link(__('<i class="fa fa-list"></i> Lister les migrations'), ['action' => 'index'], ['escape' => false]) ?> </li>
+        <li><?= $this->Html->link(__('<i class="fa fa-plus-circle"></i> Nouvelle migration'), ['action' => 'add'], ['escape' => false]) ?> </li>
     </ul>
 </nav>
 <div class="migrations view large-9 medium-8 columns content">
-    <h3><?= h($migration->name) ?></h3>
+    <h3>Migration <?= h($migration->name) ?></h3>
     <div class="panel">
-        <p>Based on <?= $migration->has('scenario') ? $this->Html->link($migration->scenario->name, ['controller' => 'Scenarios', 'action' => 'view', $migration->scenario->id]) : '' ?> scenario.</p>
+        <p>Basé sur le scénario <?= $migration->has('scenario') ? $this->Html->link($migration->scenario->name, ['controller' => 'Scenarios', 'action' => 'view', $migration->scenario->id]) : '' ?>.</p>
     </div>
     <div class="related">
         <div class="small-12 columns">
@@ -22,7 +20,10 @@
                 <?php foreach($migration->scenario->tasks as $task): ?>
                     <tr>
                         <td><h5><?= $task->name ?></h5></td>
-                        <td><a href="#" class="button tiny success"><i class="fa fa-play"></i>&nbsp;&nbsp;&nbsp;Start</a></td>
+                        <td>
+                            <i class="fa fa-spinner fa-lg fa-pulse" style="color:green;"></i> <?= $this->Form->postLink('<i class="fa fa-play"></i>&nbsp;&nbsp;&nbsp;Démarrer l\'exécution', ['action' => 'delete', $execLines[$task->id]], ['confirm' => __('Exécuter {0} ?', $execLines[$task->id]), 'class' => 'button tiny success', 'escape' => false]) ?>
+                            <?= $this->Form->postLink('<i class="fa fa-stop"></i> &nbsp;&nbsp;&nbsp;Stopper l\'exécution', ['action' => 'delete', $execLines[$task->id]], ['confirm' => __('Exécuter {0} ?', $execLines[$task->id]), 'class' => 'button tiny alert', 'escape' => false]) ?>
+                        </td>
                     </tr>
 
                 <?php endforeach; ?>

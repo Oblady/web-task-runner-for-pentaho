@@ -6,6 +6,7 @@ use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
+use Cake\Core\Configure;
 
 /**
  * Migrations Model
@@ -65,5 +66,43 @@ class MigrationsTable extends Table
     {
         $rules->add($rules->existsIn(['scenario_id'], 'Scenarios'));
         return $rules;
+    }
+
+    public function getExecLine($migration_id){
+
+        //Chemin de Kitchen sur le système
+        $kitchen = Configure::read('Pentaho.kitchen');
+
+        $migration = $this->get($migration_id,['contain' => ['Scenarios','Scenarios.Parameters', 'Scenarios.Tasks.Parameters']]);
+
+        $scenario_parameters="";
+        foreach($migration->scenario->parameters as $parameter){
+            $scenario_parameters .= "-param:".$parameter->name."=".$parameter->_joinData->value." ";
+        }
+
+        $migrationsParametersId = $this->MigrationsParameters->find('list', [
+            'keyField' => 'parameter.name',
+            'valueField' => 'value',
+            'groupField' => 'task_id'
+        ])->contain(['Parameters'])
+          ->where([
+            'MigrationsParameters.migration_id' => $migration_id
+        ])->toArray();
+
+        $tasksPath = $this->Scenarios->Tasks->find('list', [
+            'keyField' => 'id',
+            'valueField' => 'job_path'
+        ])->toArray();
+
+        $tasksExecLines = [];
+        foreach($migrationsParametersId as $taskId => $task){
+            $exec_line = "" ;
+            foreach($task as $parameter_name => $parameter_value){
+                $exec_line .= "-param:".$parameter_name."=".$parameter_value." ";
+            }
+            $tasksExecLines[$taskId] = $kitchen . " -file=" . $tasksPath[$taskId]." ".$scenario_parameters.$exec_line." -logfile=".$migration_id.".log";
+        }
+
+        return $tasksExecLines;
     }
 }
