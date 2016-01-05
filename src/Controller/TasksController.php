@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\Filesystem\Folder;
 
 /**
  * Tasks Controller
@@ -57,7 +58,8 @@ class TasksController extends AppController
         }
         $parameters = $this->Tasks->Parameters->find('list', ['limit' => 200]);
         $scenarios = $this->Tasks->Scenarios->find('list', ['limit' => 200]);
-        $this->set(compact('task', 'parameters', 'scenarios'));
+        $files = $this->listAvailibleTasksFiles();
+        $this->set(compact('task', 'parameters', 'scenarios', 'files'));
         $this->set('_serialize', ['task']);
     }
 
@@ -105,5 +107,11 @@ class TasksController extends AppController
             $this->Flash->error(__('The task could not be deleted. Please, try again.'));
         }
         return $this->redirect(['action' => 'index']);
+    }
+
+    private function listAvailibleTasksFiles(){
+        $dir = new Folder(ROOT.'/scripts');
+        $files = $dir->findRecursive('run-.*\.kjb');
+        return array_combine($files, $files);
     }
 }

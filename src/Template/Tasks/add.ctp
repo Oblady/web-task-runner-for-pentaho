@@ -15,7 +15,7 @@
         <?php
             echo $this->Form->input('name');
             echo $this->Form->input('description');
-            echo $this->Form->input('job_path');
+            echo $this->Form->input('job_path', ['type' => 'select', 'options' => $files]);
             echo $this->Form->input('parameters._ids', ['options' => $parameters]);
             echo $this->Form->input('scenarios._ids', ['options' => $scenarios]);
         ?>
