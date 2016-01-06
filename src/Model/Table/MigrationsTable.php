@@ -100,7 +100,7 @@ class MigrationsTable extends Table
             foreach($task as $parameter_name => $parameter_value){
                 $exec_line .= "-param:".$parameter_name."=".$parameter_value." ";
             }
-            $tasksExecLines[$taskId] = $kitchen . " -file=" . $tasksPath[$taskId]." ".$scenario_parameters.$exec_line." -logfile=".$migration_id.".log";
+            $tasksExecLines[$taskId] = $kitchen . " -file=" . $tasksPath[$taskId]." ".$scenario_parameters.$exec_line."-logfile=/var/log/pentaho-migration-".$migration_id.".log";
         }
 
         return $tasksExecLines;

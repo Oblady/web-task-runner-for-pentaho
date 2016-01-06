@@ -122,4 +122,47 @@ class MigrationsController extends AppController
         }
         return $this->redirect(['action' => 'index']);
     }
+
+    public function execTask($id = null, $task_id = null){
+        $migration = $this->Migrations->get($id, [
+            'contain' => ['Scenarios','Scenarios.Parameters', 'Scenarios.Tasks.Parameters']
+        ]);
+        $execLines = $this->Migrations->getExecLine($id);
+        if($this->taskIsRunning($id,$task_id)){
+            debug('La tâche EST en cours d\'exécution');
+        }else{
+            debug('La tâche n\'est PAS en cours d\'exécution.');
+        }
+        $this->set(compact('migration','execLines'));
+    }
+
+    public function getLog($id = null, $task_id = null){
+        if (file_exists(LOGS.'kitchen/4_1.log')) {
+            header('Content-Type: text/plain');
+            header('Content-Disposition: inline');
+            header('Expires: 0');
+            header('Cache-Control: must-revalidate');
+            header('Pragma: public');
+            header('Content-Length: ' . filesize(LOGS.'kitchen/4_1.log'));
+            readfile(LOGS.'kitchen/4_1.log');
+            exit;
+        }
+    }
+
+    public function viewLog($id = null, $task_id = null){
+
+    }
+
+    private function taskIsRunning($id = null, $task_id = null){
+        if (!file_exists(LOGS.'pids/'.$id.'_'.$task_id.'.pid')) {
+            return false;
+        }else{
+            $pid = file_get_contents(LOGS.'pids/'.$id.'_'.$task_id.'.pid');
+
+            $command = 'ps -p '.$pid;
+            exec($command,$op);
+            if (!isset($op[1]))return false;
+            else return true;
+        }
+    }
 }

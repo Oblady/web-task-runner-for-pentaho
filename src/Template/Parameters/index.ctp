@@ -5,11 +5,10 @@
     </ul>
 </nav>
 <div class="parameters index large-9 medium-8 columns content">
-    <h3><?= __('Parameters') ?></h3>
+    <h3>Paramètres</h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('description') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
@@ -18,13 +17,12 @@
         <tbody>
             <?php foreach ($parameters as $parameter): ?>
             <tr>
-                <td><?= $this->Number->format($parameter->id) ?></td>
                 <td><?= h($parameter->name) ?></td>
                 <td><?= h($parameter->description) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $parameter->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $parameter->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $parameter->id], ['confirm' => __('Are you sure you want to delete # {0}?', $parameter->id)]) ?>
+                    <?= $this->Html->link(__('<i class="fa fa-eye"></i> Voir'), ['action' => 'view', $parameter->id], ['escape' => false]) ?>&nbsp;&nbsp;&nbsp;
+                    <?= $this->Html->link(__('<i class="fa fa-pencil"></i> Éditer'), ['action' => 'edit', $parameter->id], ['escape' => false]) ?>&nbsp;&nbsp;&nbsp;
+                    <?= $this->Form->postLink(__('<i class="fa fa-trash"></i> Supprimer'), ['action' => 'delete', $parameter->id], ['confirm' => __('Are you sure you want to delete # {0}?', $parameter->id), 'escape' => false]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

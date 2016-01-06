@@ -9,11 +9,10 @@
     </ul>
 </nav>
 <div class="tasks index large-9 medium-8 columns content">
-    <h3><?= __('Tasks') ?></h3>
+    <h3>Tâches</h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
                 <th><?= $this->Paginator->sort('name') ?></th>
                 <th><?= $this->Paginator->sort('description') ?></th>
                 <th><?= $this->Paginator->sort('job_path') ?></th>
@@ -23,14 +22,13 @@
         <tbody>
             <?php foreach ($tasks as $task): ?>
             <tr>
-                <td><?= $this->Number->format($task->id) ?></td>
                 <td><?= h($task->name) ?></td>
                 <td><?= h($task->description) ?></td>
                 <td><?= h($task->job_path) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $task->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $task->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id)]) ?>
+                    <?= $this->Html->link(__('<i class="fa fa-eye"></i> Voir'), ['action' => 'view', $task->id], ['escape' => false]) ?>&nbsp;&nbsp;&nbsp;
+                    <?= $this->Html->link(__('<i class="fa fa-pencil"></i> Éditer'), ['action' => 'edit', $task->id], ['escape' => false]) ?>&nbsp;&nbsp;&nbsp;
+                    <?= $this->Form->postLink(__('<i class="fa fa-trash"></i> Supprimer'), ['action' => 'delete', $task->id], ['confirm' => __('Are you sure you want to delete # {0}?', $task->id), 'escape' => false]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>

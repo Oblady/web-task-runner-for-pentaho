@@ -9,12 +9,11 @@
     </ul>
 </nav>
 <div class="scenarios index large-9 medium-8 columns content">
-    <h3><?= __('Scenarios') ?></h3>
+    <h3>Scénarios</h3>
     <table cellpadding="0" cellspacing="0">
         <thead>
             <tr>
-                <th><?= $this->Paginator->sort('id') ?></th>
-                <th><?= $this->Paginator->sort('name') ?></th>
+                <th><?= $this->Paginator->sort('name',['Nom du scénario']) ?></th>
                 <th><?= $this->Paginator->sort('description') ?></th>
                 <th class="actions"><?= __('Actions') ?></th>
             </tr>
@@ -22,13 +21,12 @@
         <tbody>
             <?php foreach ($scenarios as $scenario): ?>
             <tr>
-                <td><?= $this->Number->format($scenario->id) ?></td>
                 <td><?= h($scenario->name) ?></td>
                 <td><?= h($scenario->description) ?></td>
                 <td class="actions">
-                    <?= $this->Html->link(__('View'), ['action' => 'view', $scenario->id]) ?>
-                    <?= $this->Html->link(__('Edit'), ['action' => 'edit', $scenario->id]) ?>
-                    <?= $this->Form->postLink(__('Delete'), ['action' => 'delete', $scenario->id], ['confirm' => __('Are you sure you want to delete # {0}?', $scenario->id)]) ?>
+                    <?= $this->Html->link(__('<i class="fa fa-eye"></i> Voir'), ['action' => 'view', $scenario->id], ['escape' => false]) ?>&nbsp;&nbsp;&nbsp;
+                    <?= $this->Html->link(__('<i class="fa fa-pencil"></i> Éditer'), ['action' => 'edit', $scenario->id], ['escape' => false]) ?>&nbsp;&nbsp;&nbsp;
+                    <?= $this->Form->postLink(__('<i class="fa fa-trash"></i> Supprimer'), ['action' => 'delete', $scenario->id], ['confirm' => __('Are you sure you want to delete # {0}?', $scenario->id), 'escape' => false]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
