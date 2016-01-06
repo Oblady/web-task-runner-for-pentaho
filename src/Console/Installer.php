@@ -67,6 +67,9 @@ class Installer
         if (class_exists('\Cake\Codeception\Console\Installer')) {
             \Cake\Codeception\Console\Installer::customizeCodeceptionBinary($event);
         }
+
+        //On copie le connecteur Mysql pour Java (non inclu de base dans Pentaho)
+        copy(__DIR__.'/../../vendor/mysql/mysql-connector-j/mysql-connector-java-5.1.38-bin.jar', __DIR__.'/../../vendor/pentaho/data-integration/lib/mysql-connector-java-5.1.38-bin.jar');
     }
 
     /**
@@ -97,6 +100,7 @@ class Installer
     {
         $paths = [
             'logs',
+            'scripts',
             'tmp',
             'tmp/cache',
             'tmp/cache/models',
