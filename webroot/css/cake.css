@@ -563,3 +563,15 @@ div.message.hidden {
 .button{
     margin-bottom: 0;
 }
+
+.red{
+    color:LightCoral ;
+}
+
+.blue{
+    color:LightBlue;
+}
+
+.red .blue {
+    color:LightCoral;
+}

@@ -136,21 +136,27 @@ class MigrationsController extends AppController
         $this->set(compact('migration','execLines'));
     }
 
-    public function getLog($id = null, $task_id = null){
-        if (file_exists(LOGS.'kitchen/4_1.log')) {
-            header('Content-Type: text/plain');
-            header('Content-Disposition: inline');
-            header('Expires: 0');
-            header('Cache-Control: must-revalidate');
-            header('Pragma: public');
-            header('Content-Length: ' . filesize(LOGS.'kitchen/4_1.log'));
-            readfile(LOGS.'kitchen/4_1.log');
-            exit;
+    public function getPieceOfLog($id = null, $task_id = null){
+        $session = $this->request->session();
+        header('Content-Type: text/plain');
+        if (file_exists(LOGS.'kitchen/'.$id.'_'.$task_id.'.log')) {
+            $handle = fopen(LOGS.'kitchen/'.$id.'_'.$task_id.'.log', 'r');
+            if ($session->check('Logfile.offset')) {
+                $data = stream_get_contents($handle, -1, $session->read('Logfile.offset'));
+            } else {
+                $data = stream_get_contents($handle, -1);
+            }
+            $session->write('Logfile.offset', ftell($handle));
+            $highlighted_data = preg_replace('/(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/','<span class="blue">$1</span>',$data);
+            $highlighted_data = preg_replace('/((?:.*ERROR.*)|(?:.*Error.*)|(?:.* -  at.*)|(?:.* -   at.*)|(?:.* -   \.\.\. .*))/','<span class="red">$1</span>',$highlighted_data);
+            echo $highlighted_data;
         }
+        exit;
     }
 
     public function viewLog($id = null, $task_id = null){
-
+        $session = $this->request->session();
+        $session->delete('Logfile.offset');
     }
 
     private function taskIsRunning($id = null, $task_id = null){
