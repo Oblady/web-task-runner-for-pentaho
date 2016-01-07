@@ -11,6 +11,12 @@ use App\Controller\AppController;
 class MigrationsController extends AppController
 {
 
+    public function initialize()
+    {
+        parent::initialize();
+        $this->loadComponent('SystemChecks');
+    }
+
     /**
      * Index method
      *
@@ -121,6 +127,45 @@ class MigrationsController extends AppController
             $this->Flash->error(__('The migration could not be deleted. Please, try again.'));
         }
         return $this->redirect(['action' => 'index']);
+    }
+
+    public function check($check = null){
+
+        switch ($check) {
+            case "java":
+                if($this->SystemChecks->javaInstalled()){
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; <code>java</code> est correctement installé.';
+                }else{
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; <code>java</code> n\'est pas présent sur le système.';
+                }
+                break;
+            case "pentaho":
+                if($this->SystemChecks->pentahoInstalled()){
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; <code>kitchen.sh</code> est présent sur le système.';
+                }else{
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; <code>kitchen.sh</code> n\'est pas présent sur le système.';
+                }
+                break;
+            case "mysql":
+                if($this->SystemChecks->mysqlConnectorInstalled()){
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; <code>mysql-connector-java-5.1.38-bin.jar</code> (MySQL Connector/J) est présent sur le système.';
+                }else{
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; <code>mysql-connector-java-5.1.38-bin.jar</code> (MySQL Connector/J) n\'est pas présent sur le système.';
+                }
+                break;
+            case "logs":
+                if($this->SystemChecks->logsKitchenDirectoryExistsAndIsWritable()){
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; Le répertoire <code>logs/kitchen</code> est présent et inscriptible.';
+                }else{
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; Le répertoire <code>logs/kitchen</code> n\'est pas présent et/ou inscriptible.';
+                }
+                break;
+        }
+        exit;
+    }
+
+    public function requirements($id = null, $task_id = null){
+
     }
 
     public function execTask($id = null, $task_id = null){

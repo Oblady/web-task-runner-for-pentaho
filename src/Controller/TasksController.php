@@ -58,8 +58,9 @@ class TasksController extends AppController
         }
         $parameters = $this->Tasks->Parameters->find('list', ['limit' => 200]);
         $scenarios = $this->Tasks->Scenarios->find('list', ['limit' => 200]);
+        $tasks = $this->Tasks->find('list', ['limit' => 200]);
         $files = $this->listAvailibleTasksFiles();
-        $this->set(compact('task', 'parameters', 'scenarios', 'files'));
+        $this->set(compact('task', 'parameters', 'scenarios', 'files', 'tasks'));
         $this->set('_serialize', ['task']);
     }
 
@@ -86,7 +87,8 @@ class TasksController extends AppController
         }
         $parameters = $this->Tasks->Parameters->find('list', ['limit' => 200]);
         $scenarios = $this->Tasks->Scenarios->find('list', ['limit' => 200]);
-        $this->set(compact('task', 'parameters', 'scenarios'));
+        $tasks = $this->Tasks->find('list', ['limit' => 200]);
+        $this->set(compact('task', 'parameters', 'scenarios', 'tasks'));
         $this->set('_serialize', ['task']);
     }
 

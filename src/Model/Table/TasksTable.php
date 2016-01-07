@@ -30,6 +30,10 @@ class TasksTable extends Table
         $this->displayField('name');
         $this->primaryKey('id');
 
+        $this->belongsTo('Tasks', [
+            'foreignKey' => 'task_id'
+        ]);
+
         $this->belongsToMany('Parameters', [
             'foreignKey' => 'task_id',
             'targetForeignKey' => 'parameter_id',
@@ -42,6 +46,19 @@ class TasksTable extends Table
         ]);
 
         $this->hasMany('MigrationsParameters');
+    }
+
+    /**
+     * Returns a rules checker object that will be used for validating
+     * application integrity.
+     *
+     * @param \Cake\ORM\RulesChecker $rules The rules object to be modified.
+     * @return \Cake\ORM\RulesChecker
+     */
+    public function buildRules(RulesChecker $rules)
+    {
+        $rules->add($rules->existsIn(['task_id'], 'Tasks'));
+        return $rules;
     }
 
     /**

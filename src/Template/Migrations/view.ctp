@@ -21,7 +21,7 @@
                     <tr>
                         <td><h5><?= $task->name ?></h5></td>
                         <td>
-                            <i class="fa fa-spinner fa-lg fa-pulse" style="color:green;"></i> <?= $this->Form->postLink('<i class="fa fa-play"></i>&nbsp;&nbsp;&nbsp;Démarrer l\'exécution', ['action' => 'delete', $execLines[$task->id]], ['confirm' => __('Exécuter {0} ?', $execLines[$task->id]), 'class' => 'button tiny success', 'escape' => false]) ?>
+                            <?= $this->Html->link('<i class="fa fa-flag-checkered"></i>&nbsp;&nbsp;&nbsp;Vérifier les pré-requis et démarrer l\'exécution', ['action' => 'requirements', $migration->id, $task->id], ['class' => 'button tiny success', 'escape' => false]) ?>
                             <!--<?= $this->Form->postLink('<i class="fa fa-stop"></i> &nbsp;&nbsp;&nbsp;Stopper l\'exécution', ['action' => 'delete', $execLines[$task->id]], ['confirm' => __('Exécuter {0} ?', $execLines[$task->id]), 'class' => 'button tiny alert', 'escape' => false]) ?>-->
                             <?= $this->Html->link('<i class="fa fa-file-text-o"></i> &nbsp;&nbsp;&nbsp;Voir le journal d\'exécution', ['action' => 'view-log', $migration->id, $task->id], ['class' => 'button tiny', 'escape' => false]) ?>
                         </td>
