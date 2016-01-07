@@ -151,6 +151,7 @@ class MigrationsController extends AppController
             }
             $session->write('Logfile.offset', ftell($handle));
             $highlighted_data = preg_replace('/(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/','<span class="blue">$1</span>',$data);
+            $highlighted_data = preg_replace('/((?:.* - Kitchen - Finished!.*))/','<span class="done">$1</span>',$highlighted_data);
 
             preg_match_all('/.*( - .* - )(?:ERROR).*/',$data,$matches);
             $errors = array_unique($matches[1]);
