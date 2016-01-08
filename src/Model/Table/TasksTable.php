@@ -46,6 +46,7 @@ class TasksTable extends Table
         ]);
 
         $this->hasMany('MigrationsParameters');
+        $this->hasMany('ParametersTasks');
     }
 
     /**
@@ -83,5 +84,11 @@ class TasksTable extends Table
             ->allowEmpty('job_path');
 
         return $validator;
+    }
+
+    public function allTaskParametersFilled($id, $task_id){
+        $nb_param = $this->ParametersTasks->find('all')->where(['task_id' => $task_id]);
+
+        debug($nb_param->count());
     }
 }

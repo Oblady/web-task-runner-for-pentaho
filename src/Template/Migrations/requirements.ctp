@@ -63,17 +63,17 @@
     <table>
         <tbody>
         <tr>
-            <td id="file">
+            <td id="kjb">
                 <i class="fa fa-spinner fa-lg fa-pulse"></i> &nbsp; Le fichier de script PDI <code>.kjb</code> associé à la tâche est-il présent et valide ?
             </td>
         </tr>
         <tr>
             <td id="requirement">
-                <i class="fa fa-spinner fa-lg fa-pulse"></i> &nbsp; La tâche spécifié en prérequis de la tâche courante est en succès ?
+                <i class="fa fa-spinner fa-lg fa-pulse"></i> &nbsp; La tâche spécifiée le cas échéant en prérequis de la tâche courante est en succès ?
             </td>
         </tr>
         <tr>
-            <td id="file">
+            <td id="task-parameters">
                 <i class="fa fa-spinner fa-lg fa-pulse"></i> &nbsp; L'ensemble des paramètres liés à la tâche sont-ils renseignés ?
             </td>
         </tr>
@@ -84,6 +84,9 @@
 
 <?php $this->start('script'); ?>
 <script type="text/javascript">
+
+    var id_migration = <?= $id; ?>;
+    var id_tache = <?= $task_id; ?>;
 
     function getXMLHttpRequest() {
         var xhr = null;
@@ -115,7 +118,7 @@
             }
         };
 
-        var url = "<?php echo $this->Url->build(['controller' => 'Migrations', 'action' => 'check']);?>/"+action;
+        var url = "<?php echo $this->Url->build(['controller' => 'Migrations', 'action' => 'check']);?>/"+id_migration+"/"+id_tache+"/"+action;
 
         xhr.open("GET", url, true);
         xhr.send(null);
@@ -126,6 +129,11 @@
         check('pentaho');
         check('mysql');
         check('logs');
+        check('running');
+
+        check('kjb');
+        check('requirement');
+        check('task-parameters')
     });
 </script>
 <?php $this->end(); ?>

@@ -2,6 +2,7 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
+use Cake\ORM\TableRegistry;
 
 /**
  * Migrations Controller
@@ -129,35 +130,63 @@ class MigrationsController extends AppController
         return $this->redirect(['action' => 'index']);
     }
 
-    public function check($check = null){
+    public function check($id = null, $task_id = null, $check = null){
 
         switch ($check) {
             case "java":
                 if($this->SystemChecks->javaInstalled()){
-                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; <code>java</code> est correctement installé.';
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; Le binaire exécutable <code>java</code> est présent sur le système.';
                 }else{
-                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; <code>java</code> n\'est pas présent sur le système.';
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 1 — Le binaire exécutable <code>java</code> n\'est pas présent sur le système.';
                 }
                 break;
             case "pentaho":
                 if($this->SystemChecks->pentahoInstalled()){
-                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; <code>kitchen.sh</code> est présent sur le système.';
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; Le script shell <code>kitchen.sh</code> (Pentaho Data Integration) est présent sur le système.';
                 }else{
-                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; <code>kitchen.sh</code> n\'est pas présent sur le système.';
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 2 — Le script shell <code>kitchen.sh</code> (Pentaho Data Integration) n\'est pas présent sur le système.';
                 }
                 break;
             case "mysql":
                 if($this->SystemChecks->mysqlConnectorInstalled()){
-                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; <code>mysql-connector-java-5.1.38-bin.jar</code> (MySQL Connector/J) est présent sur le système.';
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; L\'archive java <code>mysql-connector-java-5.1.38-bin.jar</code> (MySQL Connector/J) est présente sur le système.';
                 }else{
-                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; <code>mysql-connector-java-5.1.38-bin.jar</code> (MySQL Connector/J) n\'est pas présent sur le système.';
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 3 — L\'archive java <code>mysql-connector-java-5.1.38-bin.jar</code> (MySQL Connector/J) n\'est pas présente sur le système.';
                 }
                 break;
             case "logs":
                 if($this->SystemChecks->logsKitchenDirectoryExistsAndIsWritable()){
                     echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; Le répertoire <code>logs/kitchen</code> est présent et inscriptible.';
                 }else{
-                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; Le répertoire <code>logs/kitchen</code> n\'est pas présent et/ou inscriptible.';
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 4 — Le répertoire <code>logs/kitchen</code> n\'est pas présent et/ou inscriptible.';
+                }
+                break;
+            case "running":
+                if($this->noTaskRunningForMigrationId($id)){
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; Aucune tâche déjà en cours d\'exécution pour cette migration.';
+                }else{
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 5 — Une tâche est déjà en cours d\'exécution pour cette migration.';
+                }
+                break;
+            case "kjb":
+                if($this->SystemChecks->kjbExists($task_id)){
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; Le fichier de tâche <code>.kjb</code> (Pentaho Data Integration) associé à la tâche courante est présent et valide.';
+                }else{
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 7 — Le fichier de tâche <code>.kjb</code> (Pentaho Data Integration) associé à la tâche courante n\'est pas présent ou est invalide.';
+                }
+                break;
+            case "requirement":
+                if($this->requirementTaskIsSuccessfull($id, $task_id)){
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; La tâche spécifiée le cas échéant en prérequis de la tâche courante est en succès.';
+                }else{
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 8 — La tâche spécifiée le cas échéant en prérequis de la tâche courante est en échec.';
+                }
+                break;
+            case "task-parameters":
+                if($this->Migrations->Scenarios->Tasks->allTaskParametersFilled($id, $task_id)){
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; L\'ensemble des paramètres liés à la tâche courante sont renseignés.';
+                }else{
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 9 — L\'ensemble des paramètres liés à la tâche courante ne sont pas renseignés.';
                 }
                 break;
         }
@@ -165,7 +194,8 @@ class MigrationsController extends AppController
     }
 
     public function requirements($id = null, $task_id = null){
-
+        $this->set('id',$id);
+        $this->set('task_id',$task_id);
     }
 
     public function execTask($id = null, $task_id = null){
@@ -180,6 +210,8 @@ class MigrationsController extends AppController
         }
         $this->set(compact('migration','execLines'));
     }
+
+
 
     public function getPieceOfLog($id = null, $task_id = null){
         $session = $this->request->session();
@@ -216,15 +248,52 @@ class MigrationsController extends AppController
     }
 
     private function taskIsRunning($id = null, $task_id = null){
-        if (!file_exists(LOGS.'pids/'.$id.'_'.$task_id.'.pid')) {
+        if (!file_exists(LOGS.'kitchen/'.$id.'_'.$task_id.'.pid')) {
             return false;
         }else{
-            $pid = file_get_contents(LOGS.'pids/'.$id.'_'.$task_id.'.pid');
+            $pid = file_get_contents(LOGS.'kitchen/'.$id.'_'.$task_id.'.pid');
 
             $command = 'ps -p '.$pid;
             exec($command,$op);
             if (!isset($op[1]))return false;
             else return true;
+        }
+    }
+
+    public function requirementTaskIsSuccessfull($id = null, $task_id = null){
+
+        $task = $this->Migrations->Scenarios->Tasks->get($task_id, [
+            'fields' => ['task_id']
+        ]);
+
+        if($task->task_id == 0){
+            return true;
+        }else{
+            if(!file_exists(LOGS.'kitchen/'.$id.'_'.$task->task_id.'.log')){
+                return false;
+            }else{
+                $logfile = file_get_contents(LOGS.'kitchen/'.$id.'_'.$task->task_id.'.log');
+                $error = (strpos($logfile, 'ERROR')===false);
+                return $error;
+            }
+        }
+    }
+
+    public function noTaskRunningForMigrationId($id = null){
+        $isRunning = [];
+
+        $migration = $this->Migrations->get($id, [
+            'contain' => ['Scenarios.Tasks']
+        ]);
+
+        foreach($migration->scenario->tasks as $task){
+            $isRunning[$task->id] = $this->taskIsRunning($id, $task->id);
+        }
+
+        if(in_array(true,$isRunning)){
+            return false;
+        }else{
+            return true;
         }
     }
 }

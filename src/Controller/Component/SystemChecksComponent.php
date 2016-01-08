@@ -2,6 +2,7 @@
 
 namespace App\Controller\Component;
 use Cake\Controller\Component;
+use Cake\ORM\TableRegistry;
 
 class SystemChecksComponent extends Component
 {
@@ -30,4 +31,14 @@ class SystemChecksComponent extends Component
         return is_writable(LOGS.'kitchen');
     }
 
+    public function kjbExists($id = null){
+
+        $table_tasks = TableRegistry::get('Tasks');
+        $task = $table_tasks->get($id);
+
+        if(file_exists($task->job_path) && mime_content_type($task->job_path) == "application/xml")
+            return true;
+        else
+            return false;
+    }
 }
