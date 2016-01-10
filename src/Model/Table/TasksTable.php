@@ -86,9 +86,20 @@ class TasksTable extends Table
         return $validator;
     }
 
+    /**
+     * @param $id int The migration_id to check
+     * @param $task_id int The task_id to check
+     * @return bool Whether all tasks parameters has been filled or not.
+     */
     public function allTaskParametersFilled($id, $task_id){
-        $nb_param = $this->ParametersTasks->find('all')->where(['task_id' => $task_id]);
+        $nb_param = $this->ParametersTasks->find('all')->where(['task_id' => $task_id])->count();
+        $nb_filled = $this->MigrationsParameters->find('all')->where([
+            'task_id' => $task_id,
+            'migration_id' => $id,
+            'value IS NOT NULL',
+            'value <> ""'
+        ])->count();
 
-        debug($nb_param->count());
+        return $nb_param === $nb_filled;
     }
 }

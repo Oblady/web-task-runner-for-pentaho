@@ -2,12 +2,15 @@
 namespace App\Controller;
 
 use App\Controller\AppController;
-use Cake\ORM\TableRegistry;
+use App\Controller\Component\SystemChecksComponent;
+use App\Model\Table\MigrationsTable;
+use Cake\Core\App;
 
 /**
  * Migrations Controller
  *
- * @property \App\Model\Table\MigrationsTable $Migrations
+ * @property MigrationsTable $Migrations
+ * @property ScenariosTable $Scenarios
  */
 class MigrationsController extends AppController
 {
@@ -41,7 +44,7 @@ class MigrationsController extends AppController
      */
     public function view($id = null)
     {
-        $execLines = $this->Migrations->getExecLine($id);
+        $execLines = $this->Migrations->getExecLine($id, false);
         $migration = $this->Migrations->get($id, [
             'contain' => ['Scenarios','Scenarios.Parameters', 'Scenarios.Tasks.Parameters']
         ]);
@@ -66,7 +69,6 @@ class MigrationsController extends AppController
     /**
      * Add method
      *
-     * @return void Redirects on successful add, renders view otherwise.
      */
     public function add()
     {
@@ -89,7 +91,7 @@ class MigrationsController extends AppController
      * Edit method
      *
      * @param string|null $id Migration id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Network\Response|null
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -168,6 +170,13 @@ class MigrationsController extends AppController
                     echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 5 — Une tâche est déjà en cours d\'exécution pour cette migration.';
                 }
                 break;
+            case "scenario-parameters":
+                if($this->Migrations->allScenarioParametersFilled($id)){
+                    echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; L\'ensemble des paramètres liés au scénario associé à la migration sont renseignés.';
+                }else{
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 5 — L\'ensemble des paramètres liés au scénario associé à la migration ne sont pas renseignés.';
+                }
+                break;
             case "kjb":
                 if($this->SystemChecks->kjbExists($task_id)){
                     echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; Le fichier de tâche <code>.kjb</code> (Pentaho Data Integration) associé à la tâche courante est présent et valide.';
@@ -179,7 +188,7 @@ class MigrationsController extends AppController
                 if($this->requirementTaskIsSuccessfull($id, $task_id)){
                     echo '<i class="fa fa-check-circle fa-lg" style="color:green;"></i> &nbsp; La tâche spécifiée le cas échéant en prérequis de la tâche courante est en succès.';
                 }else{
-                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 8 — La tâche spécifiée le cas échéant en prérequis de la tâche courante est en échec.';
+                    echo '<i class="fa fa-times-circle fa-lg" style="color:red;"></i> &nbsp; err. 8 — La tâche spécifiée en prérequis de la tâche courante est en échec ou n\'a pas été lancée.';
                 }
                 break;
             case "task-parameters":
@@ -198,23 +207,30 @@ class MigrationsController extends AppController
         $this->set('task_id',$task_id);
     }
 
-    public function execTask($id = null, $task_id = null){
-        $migration = $this->Migrations->get($id, [
-            'contain' => ['Scenarios','Scenarios.Parameters', 'Scenarios.Tasks.Parameters']
-        ]);
-        $execLines = $this->Migrations->getExecLine($id);
-        if($this->taskIsRunning($id,$task_id)){
-            debug('La tâche EST en cours d\'exécution');
+    public function run($id = null, $task_id = null){
+        if( $this->SystemChecks->javaInstalled() &&
+            $this->SystemChecks->pentahoInstalled() &&
+            $this->SystemChecks->mysqlConnectorInstalled() &&
+            $this->SystemChecks->logsKitchenDirectoryExistsAndIsWritable() &&
+            $this->noTaskRunningForMigrationId($id) &&
+            $this->Migrations->allScenarioParametersFilled($id) &&
+            $this->SystemChecks->kjbExists($task_id) &&
+            $this->requirementTaskIsSuccessfull($id, $task_id) &&
+            $this->Migrations->Scenarios->Tasks->allTaskParametersFilled($id, $task_id)
+        ){
+            //exec('export LANG=en_US');
+            exec($this->Migrations->getExecLine($id)[$task_id]);
+            return $this->redirect(['action' => 'viewLog', $id, $task_id]);
         }else{
-            debug('La tâche n\'est PAS en cours d\'exécution.');
+            return $this->redirect(['action' => 'requirements', $id, $task_id]);
         }
-        $this->set(compact('migration','execLines'));
     }
 
 
 
     public function getPieceOfLog($id = null, $task_id = null){
         $session = $this->request->session();
+        //$session->delete('Logfile.offset');
         header('Content-Type: text/plain');
         header('Expires: 0');
         header('Cache-Control: must-revalidate');
@@ -229,12 +245,15 @@ class MigrationsController extends AppController
             $session->write('Logfile.offset', ftell($handle));
             $highlighted_data = preg_replace('/(\d{4}\/\d{2}\/\d{2} \d{2}:\d{2}:\d{2})/','<span class="blue">$1</span>',$data);
             $highlighted_data = preg_replace('/((?:.* - Kitchen - Finished!.*))/','<span class="done">$1</span>',$highlighted_data);
+            $highlighted_data = preg_replace('/((?:.* - Kitchen - Fin !.*))/','<span class="done">$1</span>',$highlighted_data);
+
+            $highlighted_data = preg_replace('/^(([a-zA-Z]|\t).*)$/m','<span class="red">$1</span>',$highlighted_data);
 
             preg_match_all('/.*( - .* - )(?:ERROR).*/',$data,$matches);
             $errors = array_unique($matches[1]);
 
             foreach($errors as $error){
-                $highlighted_data = preg_replace('/((?:.*'.$error.'.*))/','<span class="red">$1</span>',$highlighted_data);
+                $highlighted_data = preg_replace('/((?:.*'.str_replace('/','\/',$error).'.*))/','<span class="red">$1</span>',$highlighted_data);
             }
 
             echo $highlighted_data;
@@ -243,8 +262,14 @@ class MigrationsController extends AppController
     }
 
     public function viewLog($id = null, $task_id = null){
-        $session = $this->request->session();
-        $session->delete('Logfile.offset');
+        if(file_exists(LOGS.'kitchen/'.$id.'_'.$task_id.'.log')){
+            $session = $this->request->session();
+            $session->delete('Logfile.offset');
+            $this->set(compact('id','task_id'));
+        }else{
+            $this->Flash->error(__('Aucun fichier de trace existant pour cette tâche.'));
+            return $this->redirect(['action' => 'view', $id]);
+        }
     }
 
     private function taskIsRunning($id = null, $task_id = null){

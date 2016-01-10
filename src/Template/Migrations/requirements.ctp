@@ -46,7 +46,7 @@
         </tbody>
     </table>
 
-    <h5><i class="fa fa-usd"></i> prérequis scénario</h5>
+    <h5><i class="fa fa-list-alt"></i> prérequis scénario</h5>
 
     <table>
         <tbody>
@@ -80,6 +80,9 @@
         </tbody>
     </table>
 
+    <?= $this->Html->link('<i class="fa fa-reply"></i> &nbsp;&nbsp; Modifier la migration', ['action' => 'view', $id], ['escape' => false, 'class' => 'button', 'style' => 'display:none;', 'id' => 'edit-migration']) ?>
+    <?= $this->Html->link('<i class="fa fa-refresh"></i> &nbsp;&nbsp; Vérifier à nouveau', ['action' => 'requirements', $id, $task_id], ['escape' => false, 'class' => 'button secondary', 'style' => 'display:none;', 'id' => 'check-again']) ?>
+    <?= $this->Html->link('<i class="fa fa-cogs"></i> &nbsp;&nbsp; Lancer l\'exécution de la tâche', ['action' => 'run', $id, $task_id], ['escape' => false, 'class' => 'button success', 'style' => 'display:none;', 'id' => 'run-task']) ?>
 </div>
 
 <?php $this->start('script'); ?>
@@ -115,6 +118,18 @@
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && (xhr.status == 200 || xhr.status == 0)) {
                 document.getElementById(action).innerHTML = xhr.responseText;
+
+                var error = document.getElementsByClassName('fa-times-circle').length;
+                var success = document.getElementsByClassName('fa-check-circle').length;
+
+                if(error + success == 9){
+                    if(success == 9){
+                        document.getElementById('run-task').style.display = 'block';
+                    }else{
+                        document.getElementById('edit-migration').style.display = 'inline';
+                        document.getElementById('check-again').style.display = 'inline';
+                    }
+                }
             }
         };
 
@@ -129,7 +144,10 @@
         check('pentaho');
         check('mysql');
         check('logs');
+
         check('running');
+
+        check('scenario-parameters');
 
         check('kjb');
         check('requirement');

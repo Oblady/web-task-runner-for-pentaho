@@ -11,7 +11,8 @@ use Cake\Core\Configure;
 /**
  * Migrations Model
  *
- * @property \Cake\ORM\Association\BelongsTo $Scenarios
+ * @property ScenariosTable $Scenarios
+ * @property MigrationsParametersTable $MigrationsParameters
  */
 class MigrationsTable extends Table
 {
@@ -68,10 +69,10 @@ class MigrationsTable extends Table
         return $rules;
     }
 
-    public function getExecLine($migration_id){
+    public function getExecLine($migration_id, $exec = true){
 
         //Chemin de Kitchen sur le système
-        $kitchen = Configure::read('Pentaho.kitchen');
+        $kitchen = ROOT.'/vendor/pentaho/data-integration/kitchen.sh';
 
         $migration = $this->get($migration_id,['contain' => ['Scenarios','Scenarios.Parameters', 'Scenarios.Tasks.Parameters']]);
 
@@ -100,9 +101,30 @@ class MigrationsTable extends Table
             foreach($task as $parameter_name => $parameter_value){
                 $exec_line .= "-param:".$parameter_name."=".$parameter_value." ";
             }
-            $tasksExecLines[$taskId] = $kitchen . " -file=" . $tasksPath[$taskId]." ".$scenario_parameters.$exec_line."-logfile=/var/log/pentaho-migration-".$migration_id.".log";
+            $tasksExecLines[$taskId] = $kitchen . " -file=" . $tasksPath[$taskId]." ".$scenario_parameters.$exec_line;
+
+            if($exec){
+                $tasksExecLines[$taskId] .= ">".LOGS."kitchen/".$migration_id."_".$taskId.".log 2>&1 & echo $! >".LOGS."kitchen/".$migration_id."_".$taskId.".pid";
+            }
+
         }
 
         return $tasksExecLines;
+    }
+
+    public function allScenarioParametersFilled($id){
+        $migration = $this->get($id, ['contain' => ['Scenarios']]);
+
+        $parameters_scenarios = $this->Scenarios->ParametersScenarios->find('all')->where([
+            'scenario_id' => $migration->scenario->id
+        ])->count();
+
+        $parameters_scenarios_filled = $this->Scenarios->ParametersScenarios->find('all')->where([
+            'scenario_id' => $migration->scenario->id,
+            'value IS NOT NULL',
+            'value <> ""'
+        ])->count();
+
+        return $parameters_scenarios == $parameters_scenarios_filled;
     }
 }

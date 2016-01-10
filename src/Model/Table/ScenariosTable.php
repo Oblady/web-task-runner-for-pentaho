@@ -1,6 +1,7 @@
 <?php
 namespace App\Model\Table;
 
+use App\Model\Entity\ParametersScenario;
 use App\Model\Entity\Scenario;
 use Cake\ORM\Query;
 use Cake\ORM\RulesChecker;
@@ -10,8 +11,9 @@ use Cake\Validation\Validator;
 /**
  * Scenarios Model
  *
- * @property \Cake\ORM\Association\BelongsToMany $Parameters
- * @property \Cake\ORM\Association\BelongsToMany $Tasks
+ * @property ParametersTable $Parameters
+ * @property ParametersScenarios $ParametersScenarios
+ * @property TasksTable $Tasks
  */
 class ScenariosTable extends Table
 {
@@ -29,6 +31,8 @@ class ScenariosTable extends Table
         $this->table('scenarios');
         $this->displayField('name');
         $this->primaryKey('id');
+
+        $this->hasMany('ParametersScenarios');
 
         $this->belongsToMany('Parameters');
         $this->belongsToMany('Tasks');

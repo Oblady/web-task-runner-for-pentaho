@@ -575,3 +575,16 @@ div.message.hidden {
 .red .blue {
     color:LightCoral;
 }
+
+#modal-label{
+    background-color: #0056b8;
+    padding: 20px;
+    font-size: larger;
+    line-height: normal;
+    height: auto;
+}
+
+.modal--fade .modal-close:after, .modal--show .modal-close:after{
+    background: #0056b8;
+    color: white;
+}

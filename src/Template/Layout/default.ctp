@@ -26,8 +26,9 @@
     <?= $this->Html->meta('icon') ?>
 
     <?= $this->Html->css('base.css') ?>
-    <?= $this->Html->css('cake.css') ?>
     <?= $this->Html->css('font-awesome.min.css') ?>
+    <?= $this->Html->css('modal.css') ?>
+    <?= $this->Html->css('cake.css') ?>
 
     <?= $this->fetch('meta') ?>
     <?= $this->fetch('css') ?>

@@ -79,7 +79,7 @@
         };
 
         var nocache = new Date().getTime();
-        var url = "<?php echo $this->Url->build(['controller' => 'Migrations', 'action' => 'getPieceOfLog', '4', '1']);?>"+"?cache="+nocache;
+        var url = "<?php echo $this->Url->build(['controller' => 'Migrations', 'action' => 'getPieceOfLog', $id, $task_id]);?>"+"?cache="+nocache;
 
         xhr.open("GET", url, true);
         xhr.send(null);

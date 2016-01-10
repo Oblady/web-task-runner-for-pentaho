@@ -68,7 +68,7 @@ class ParametersScenariosController extends AppController
      * Edit method
      *
      * @param string|null $id Parameters Scenario id.
-     * @return void Redirects on successful edit, renders view otherwise.
+     * @return \Cake\Network\Response|null
      * @throws \Cake\Network\Exception\NotFoundException When record not found.
      */
     public function edit($id = null)
@@ -80,7 +80,17 @@ class ParametersScenariosController extends AppController
             $parametersScenario = $this->ParametersScenarios->patchEntity($parametersScenario, $this->request->data);
             if ($this->ParametersScenarios->save($parametersScenario)) {
                 $this->Flash->success(__('The parameters scenario has been saved.'));
-                return $this->redirect(['action' => 'index']);
+                if($this->request->query('redir_controller') !== null
+                    && $this->request->query('redir_action') !== null
+                    && $this->request->query('redir_param1') !== null){
+                    return $this->redirect([
+                        'controller' => $this->request->query('redir_controller'),
+                        'action' => $this->request->query('redir_action'),
+                        $this->request->query('redir_param1')
+                    ]);
+                }else{
+                    return $this->redirect(['action' => 'index']);
+                }
             } else {
                 $this->Flash->error(__('The parameters scenario could not be saved. Please, try again.'));
             }

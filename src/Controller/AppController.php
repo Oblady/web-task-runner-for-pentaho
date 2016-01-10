@@ -14,6 +14,7 @@
  */
 namespace App\Controller;
 
+use App\Controller\Component\SystemChecksComponent;
 use Cake\Controller\Controller;
 use Cake\Event\Event;
 
@@ -24,6 +25,7 @@ use Cake\Event\Event;
  * will inherit them.
  *
  * @link http://book.cakephp.org/3.0/en/controllers.html#the-app-controller
+ * @property \App\Controller\Component\SystemChecksComponent $SystemChecks
  */
 class AppController extends Controller
 {
