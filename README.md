@@ -8,13 +8,12 @@ La première fois :
 
 ```bash
 docker create -v /var/lib/mysql --name pdiwebrunner_data tianon/true
+docker-compose build
 ```
-
 
 Ensuite ...
 
 ```bash
-docker-compose build
 docker-compose up
 composer install
 ```
