@@ -1,0 +1,25 @@
+web:
+  build: .
+  environment:
+    ALLOW_OVERRIDE: true
+  volumes:
+    - .:/var/www/html/
+  links:
+    - db
+  ports:
+    - "9999:80"
+
+db:
+  image: mysql:5.6
+  environment:
+    MYSQL_ROOT_PASSWORD: root
+  volumes_from:
+      - pdiwebrunner_data
+  volumes:
+      - ./docker/:/etc/mysql/conf.d:ro
+  ports:
+    - "3311:3306"
+    - "3306:3306"
+
+
+#docker create -v /var/lib/mysql --name pdiwebrunner_data tianon/true

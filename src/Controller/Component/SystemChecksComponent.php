@@ -23,6 +23,9 @@ class SystemChecksComponent extends Component
     }
 
     public function mysqlConnectorInstalled(){
+        if (!file_exists(ROOT.'/vendor/pentaho/data-integration/lib/mysql-connector-java-5.1.38-bin.jar')) {
+            copy(ROOT.'/vendor/mysql/mysql-connector-j/mysql-connector-java-5.1.38-bin.jar', ROOT.'/vendor/pentaho/data-integration/lib/mysql-connector-java-5.1.38-bin.jar');
+        }
         return file_exists(ROOT.'/vendor/pentaho/data-integration/lib/mysql-connector-java-5.1.38-bin.jar');
     }
 
