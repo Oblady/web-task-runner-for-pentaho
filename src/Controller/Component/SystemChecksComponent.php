@@ -36,8 +36,10 @@ class SystemChecksComponent extends Component
 
     public function pentahoInstalled(){
         //Copy patched spoon.sh with -Dfile.encoding=UTF8 option
+    
+        copy(ROOT.'/config/kettle.properties','/var/www/.kettle/kettle.properties');
         copy(ROOT.'/config/spoon.sh',ROOT.'/vendor/pentaho/data-integration/spoon.sh');
-        return file_exists(ROOT.'/vendor/pentaho/data-integration/kitchen.sh');
+	    return file_exists(ROOT.'/vendor/pentaho/data-integration/kitchen.sh');
     }
 
     public function mysqlConnectorInstalled(){
