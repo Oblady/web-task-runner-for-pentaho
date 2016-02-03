@@ -1,20 +1,18 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Migrations'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Scenarios'), ['controller' => 'Scenarios', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Scenario'), ['controller' => 'Scenarios', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('<i class="fa fa-arrow-left"></i> Liste des migrations'), ['action' => 'index'], ['escape' => false]) ?></li>
     </ul>
 </nav>
 <div class="migrations form large-9 medium-8 columns content">
     <?= $this->Form->create($migration) ?>
     <fieldset>
-        <legend><?= __('Add Migration') ?></legend>
+        <legend><?= __('Ajouter une migration') ?></legend>
         <?php
-            echo $this->Form->input('name');
-            echo $this->Form->input('scenario_id', ['options' => $scenarios, 'empty' => true]);
+            echo $this->Form->input('name',['label'=>'Nom']);
+            echo $this->Form->input('scenario_id', ['label'=>'Basée sur le scénario', 'options' => $scenarios, 'empty' => true]);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Créer cette migration'),['class'=>'button success']) ?>
     <?= $this->Form->end() ?>
 </div>

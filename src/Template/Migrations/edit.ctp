@@ -2,25 +2,23 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Form->postLink(
-                __('Delete'),
+                '<i class="fa fa-trash"></i> '.__('Supprimer la migration'),
                 ['action' => 'delete', $migration->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $migration->id)]
+                ['confirm' => __('Êtes vous sûr(e) de vouloir supprimer la migration "{0}" ?', $migration->name), 'escape' => false]
             )
         ?></li>
-        <li><?= $this->Html->link(__('List Migrations'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Scenarios'), ['controller' => 'Scenarios', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Scenario'), ['controller' => 'Scenarios', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link(__('<i class="fa fa-arrow-left"></i> Liste des migrations'), ['action' => 'index'], ['escape' => false]) ?></li>
     </ul>
 </nav>
 <div class="migrations form large-9 medium-8 columns content">
     <?= $this->Form->create($migration) ?>
     <fieldset>
-        <legend><?= __('Edit Migration') ?></legend>
+        <legend><?= __('Modifier la migration "').$migration->name ?>"</legend>
         <?php
-            echo $this->Form->input('name');
-            echo $this->Form->input('scenario_id', ['options' => $scenarios, 'empty' => true]);
+            echo $this->Form->input('name',['label' => 'Nom']);
+            echo $this->Form->input('scenario_id', ['options' => $scenarios, 'empty' => true, 'label' => 'Basée sur le scénario']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Modifier la migration'),['class'=>'button success']) ?>
     <?= $this->Form->end() ?>
 </div>

@@ -1,26 +1,22 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Tasks'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Parameters'), ['controller' => 'Parameters', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Parameter'), ['controller' => 'Parameters', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Scenarios'), ['controller' => 'Scenarios', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Scenario'), ['controller' => 'Scenarios', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link('<i class="fa fa-arrow-left"></i> '.__('Liste des tâches'), ['action' => 'index'], ['escape' => false]) ?></li>
     </ul>
 </nav>
 <div class="tasks form large-9 medium-8 columns content">
     <?= $this->Form->create($task) ?>
     <fieldset>
-        <legend><?= __('Add Task') ?></legend>
+        <legend><?= __('Ajouter une tâche') ?></legend>
         <?php
-            echo $this->Form->input('name');
+            echo $this->Form->input('name',['label'=>'Nom']);
             echo $this->Form->input('description');
-            echo $this->Form->input('job_path', ['type' => 'select', 'options' => $files]);
-            echo $this->Form->input('task_id', ['options' => $tasks, 'empty' => true]);
-            echo $this->Form->input('parameters._ids', ['options' => $parameters]);
-            echo $this->Form->input('scenarios._ids', ['options' => $scenarios]);
+            echo $this->Form->input('job_path', ['type' => 'select', 'options' => $files, 'label'=>'Fichier .kjb correspondant']);
+            echo $this->Form->input('task_id', ['options' => $tasks, 'empty' => true, 'label'=>'Tâche constituant un prérequis à l\'exécution de cette tâche (le cas échéant)']);
+            echo $this->Form->input('parameters._ids', ['options' => $parameters, 'label'=>'Paramètres liés à la tâche']);
+            //echo $this->Form->input('scenarios._ids', ['options' => $scenarios]);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Créer la tâche'),['class'=>'button success']) ?>
     <?= $this->Form->end() ?>
 </div>

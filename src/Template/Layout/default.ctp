@@ -1,16 +1,21 @@
 <?php
 /**
- * CakePHP(tm) : Rapid Development Framework (http://cakephp.org)
- * Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
+ * This file is part of Web Task Runner for Pentaho Data Integration.
  *
- * Licensed under The MIT License
- * For full copyright and license information, please see the LICENSE.txt
- * Redistributions of files must retain the above copyright notice.
+ * Web Task Runner for Pentaho Data Integration is free software: you
+ * can redistribute it and/or modify it under the terms of the GNU
+ * Affero General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option)
+ * any later version.
  *
- * @copyright     Copyright (c) Cake Software Foundation, Inc. (http://cakefoundation.org)
- * @link          http://cakephp.org CakePHP(tm) Project
- * @since         0.10.0
- * @license       http://www.opensource.org/licenses/mit-license.php MIT License
+ * Web Task Runner for Pentaho Data Integration is distributed in the
+ * hope that it will be useful, but WITHOUT ANY WARRANTY; without
+ * even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+ * PARTICULAR PURPOSE.  See the GNU Affero General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public
+ * License along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
  */
 
 ?>
@@ -20,7 +25,7 @@
     <?= $this->Html->charset() ?>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>
-        Pentaho Web Runner |
+        Web Task Runner |
         <?= $this->fetch('title') ?>
     </title>
     <?= $this->Html->meta('icon') ?>
@@ -38,7 +43,7 @@
     <nav class="top-bar expanded" data-topbar role="navigation">
         <ul class="title-area large-3 medium-4 columns">
             <li class="name">
-                <h1><a href="">Pentaho Web Runner .::. <?= $this->fetch('title') ?></a></h1>
+                <h1><a href="#"><?= $this->Html->image('logo.png',['style'=>'margin-top:-5px; margin-right:5px;']); ?>Web Task Runner <sub>pour <em> Pentaho<sup>®</sup> <abbr style="color:white;" title="Data Integration">DI</abbr></em></sub></a></h1>
             </li>
         </ul>
         <section class="top-bar-section">

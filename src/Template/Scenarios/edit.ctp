@@ -1,30 +1,26 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Form->postLink(
-                __('Delete'),
+        <li><?= ''.$this->Form->postLink(
+                __('<i class="fa fa-trash"></i> Supprimer le scénario'),
                 ['action' => 'delete', $scenario->id],
-                ['confirm' => __('Are you sure you want to delete # {0}?', $scenario->id)]
+                ['confirm' => __('Êtes vous sûr(e) de vouloir supprimer le scénario "{0}" ?', $scenario->name), 'escape' => false]
             )
         ?></li>
-        <li><?= $this->Html->link(__('List Scenarios'), ['action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('List Parameters'), ['controller' => 'Parameters', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Parameter'), ['controller' => 'Parameters', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Tasks'), ['controller' => 'Tasks', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Task'), ['controller' => 'Tasks', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link('<i class="fa fa-arrow-left"></i> '.__('Liste des scénarios'), ['action' => 'index'], ['escape' => false]) ?></li>
     </ul>
 </nav>
 <div class="scenarios form large-9 medium-8 columns content">
     <?= $this->Form->create($scenario) ?>
     <fieldset>
-        <legend><?= __('Edit Scenario') ?></legend>
+        <legend><?= __('Modifier le scénario "').$scenario->name ?>"</legend>
         <?php
-            echo $this->Form->input('name');
+            echo $this->Form->input('name',['label'=>'Nom']);
             echo $this->Form->input('description');
-            echo $this->Form->input('parameters._ids', ['options' => $parameters]);
-            echo $this->Form->input('tasks._ids', ['options' => $tasks]);
+            echo $this->Form->input('parameters._ids', ['options' => $parameters, 'label'=>'Paramètres liés au scénario']);
+            echo $this->Form->input('tasks._ids', ['options' => $tasks, 'label'=>'Tâches liées au scénario']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Modifier le scénario'),['class'=>'button success']) ?>
     <?= $this->Form->end() ?>
 </div>

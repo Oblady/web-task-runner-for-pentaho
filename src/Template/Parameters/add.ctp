@@ -1,18 +1,18 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('List Parameters'), ['action' => 'index']) ?></li>
+        <li><?= $this->Html->link('<i class="fa fa-arrow-left"></i> '.__('Liste des paramètres'), ['action' => 'index'], ['escape' => false]) ?></li>
     </ul>
 </nav>
 <div class="parameters form large-9 medium-8 columns content">
     <?= $this->Form->create($parameter) ?>
     <fieldset>
-        <legend><?= __('Add Parameter') ?></legend>
+        <legend><?= __('Ajouter un paramètre') ?></legend>
         <?php
-            echo $this->Form->input('name');
-            echo $this->Form->input('description');
+            echo $this->Form->input('name', ['label' => 'Nom du paramètre']);
+            echo $this->Form->input('description', ['label' => 'Description du paramètre']);
         ?>
     </fieldset>
-    <?= $this->Form->button(__('Submit')) ?>
+    <?= $this->Form->button(__('Créer le paramètre'),['class'=>'button success']) ?>
     <?= $this->Form->end() ?>
 </div>

@@ -1,11 +1,7 @@
 <nav class="large-3 medium-4 columns" id="actions-sidebar">
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
-        <li><?= $this->Html->link(__('New Scenario'), ['action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Parameters'), ['controller' => 'Parameters', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Parameter'), ['controller' => 'Parameters', 'action' => 'add']) ?></li>
-        <li><?= $this->Html->link(__('List Tasks'), ['controller' => 'Tasks', 'action' => 'index']) ?></li>
-        <li><?= $this->Html->link(__('New Task'), ['controller' => 'Tasks', 'action' => 'add']) ?></li>
+        <li><?= $this->Html->link('<i class="fa fa-plus-circle"></i> '.__('Nouveau scénario'), ['action' => 'add'], ['escape' => false]) ?></li>
     </ul>
 </nav>
 <div class="scenarios index large-9 medium-8 columns content">
@@ -26,7 +22,7 @@
                 <td class="actions">
                     <?= $this->Html->link(__('<i class="fa fa-eye"></i> Voir'), ['action' => 'view', $scenario->id], ['escape' => false]) ?>&nbsp;&nbsp;&nbsp;
                     <?= $this->Html->link(__('<i class="fa fa-pencil"></i> Éditer'), ['action' => 'edit', $scenario->id], ['escape' => false]) ?>&nbsp;&nbsp;&nbsp;
-                    <?= $this->Form->postLink(__('<i class="fa fa-trash"></i> Supprimer'), ['action' => 'delete', $scenario->id], ['confirm' => __('Are you sure you want to delete # {0}?', $scenario->id), 'escape' => false]) ?>
+                    <?= $this->Form->postLink(__('<i class="fa fa-trash"></i> Supprimer'), ['action' => 'delete', $scenario->id], ['confirm' => __('Êtes vous sûr(e) de vouloir supprimer le scénario "{0}" ?', $scenario->name), 'escape' => false]) ?>
                 </td>
             </tr>
             <?php endforeach; ?>
@@ -34,9 +30,9 @@
     </table>
     <div class="paginator">
         <ul class="pagination">
-            <?= $this->Paginator->prev('< ' . __('previous')) ?>
+            <?= $this->Paginator->prev('< ' . __('précédent')) ?>
             <?= $this->Paginator->numbers() ?>
-            <?= $this->Paginator->next(__('next') . ' >') ?>
+            <?= $this->Paginator->next(__('suivant') . ' >') ?>
         </ul>
         <p><?= $this->Paginator->counter() ?></p>
     </div>

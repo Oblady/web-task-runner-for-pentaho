@@ -2,13 +2,13 @@
     <ul class="side-nav">
         <li class="heading"><?= __('Actions') ?></li>
         <li><?= $this->Html->link(__('<i class="fa fa-pencil"></i> Modifier cette migration'), ['action' => 'edit', $migration->id], ['escape' => false]) ?> </li>
-        <li><?= $this->Form->postLink(__('<i class="fa fa-trash"></i> Supprimer cette migration'), ['action' => 'delete', $migration->id], ['confirm' => __('Are you sure you want to delete # {0}?', $migration->id), 'escape' => false]) ?> </li>
-        <li><?= $this->Html->link(__('<i class="fa fa-list"></i> Lister les migrations'), ['action' => 'index'], ['escape' => false]) ?> </li>
+        <li><?= $this->Form->postLink(__('<i class="fa fa-trash"></i> Supprimer cette migration'), ['action' => 'delete', $migration->id], ['confirm' => __('Êtes vous sûr(e) de vouloir supprimer la migration "{0}"?', $migration->name), 'escape' => false]) ?> </li>
+        <li><?= $this->Html->link(__('<i class="fa fa-arrow-left"></i> Liste des migrations'), ['action' => 'index'], ['escape' => false]) ?> </li>
         <li><?= $this->Html->link(__('<i class="fa fa-plus-circle"></i> Nouvelle migration'), ['action' => 'add'], ['escape' => false]) ?> </li>
     </ul>
 </nav>
 <div class="migrations view large-9 medium-8 columns content">
-    <h3>Migration <?= h($migration->name) ?></h3>
+    <h3>Migration "<?= h($migration->name) ?>"</h3>
     <div class="panel">
         <p>Basé sur le scénario <?= $migration->has('scenario') ? $this->Html->link($migration->scenario->name, ['controller' => 'Scenarios', 'action' => 'view', $migration->scenario->id]) : '' ?>.</p>
     </div>
